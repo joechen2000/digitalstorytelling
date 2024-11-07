@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>數位敘事網站 - 美國公民權利歷史</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/plugins/animation.gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #f0f2f5, #cfd8dc);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(to right, #004080, #0059b3);
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 0;
+        }
+
+        nav ul li {
+            margin: 0;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700;
+            padding: 10px 15px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: #ffcc00;
+            color: #004080;
+            border-radius: 8px;
+        }
+
+        main {
+            padding: 50px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .horizontal-scroll-container {
+            overflow-x: auto;
+            display: flex;
+            scroll-behavior: smooth;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .horizontal-scroll-container::-webkit-scrollbar {
+            height: 10px;
+        }
+
+        .horizontal-scroll-container::-webkit-scrollbar-thumb {
+            background: #0059b3;
+            border-radius: 5px;
+        }
+
+        .scroll-item {
+            min-width: 300px;
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .scroll-item:hover {
+            transform: scale(1.05);
+        }
+
+        section {
+            margin-bottom: 60px;
+            padding: 40px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+        }
+
+        section.active {
+            opacity: 1;
+            transition: opacity 1.5s ease-in;
+        }
+
+        section:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: #004080;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #ffcc00;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+
+        .interactive {
+            cursor: pointer;
+            text-align: center;
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .interactive:hover {
+            transform: scale(1.08);
+        }
+
+        .interactive img {
+            max-width: 100%;
+            height: auto;
+            border: 4px solid #ddd;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            margin-bottom: 15px;
+            transition: filter 0.3s ease;
+        }
+
+        .interactive:hover img {
+            filter: brightness(1.1);
+        }
+
+        .call-to-action {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .call-to-action button {
+            background: linear-gradient(to right, #ffaa00, #ffcc00);
+            color: #004080;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .call-to-action button:hover {
+            background: linear-gradient(to right, #ff8800, #ffaa00);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px 0;
+            background: linear-gradient(to right, #004080, #0059b3);
+            color: #fff;
+            margin-top: 50px;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 50px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            text-align: left;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .close-button {
+            font-size: 1.8rem;
+            color: #333;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-button:hover {
+            color: #ff0000;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>數位敘事網站：美國公民權利歷史</h1>
+        <nav>
+            <ul>
+                <li><a href="#prologue">序幕</a></li>
+                <li><a href="#act1">第一幕：憲法修正案與南北戰爭</a></li>
+                <li><a href="#act2">第二幕：民權運動</a></li>
+                <li><a href="#act3">第三幕：普世人權</a></li>
+                <li><a href="#conclusion">結尾</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <!-- 水平滾動區域 -->
+<div class="horizontal-scroll-container">
+    <div class="scroll-item" onclick="showStory('軍人：約翰的故事', '我叫約翰，是一名聯邦軍士兵。我來自一個小農村，本來的生活雖然艱苦，但也還算安穩。戰爭來得迅速，政府徵召士兵的命令讓我和我的家人措手不及。如今，我在戰場上已經過了數個月，每天的生活充滿了泥濘、寒冷和飢餓。敵人的炮火和槍聲不斷在耳邊響起，每次看到身邊的戰友倒下，我的心中都有一種說不出的苦楚。有時候，我會懷疑我們這樣的奮戰是否值得。長夜裡，我會透過營火的微光，讀一些林肯總統的演講稿。他說這是為了所有人，為了讓這個國家能真正自由。我希望他是對的。這樣的信念支撐著我在戰場上持續前行，無論前方等待我們的是什麼，我都會戰鬥到底，直到我們的國家真正聯合起來。')">
+        <h3>軍人</h3>
+        <img src="images/soldier.jpg" alt="軍人">
+        <p>點擊查看軍人的故事</p>
+    </div>
+    <div class="scroll-item" onclick="showStory('政治領袖：林肯的決策', '我是亞伯拉罕·林肯，這場戰爭不僅僅是一場南北之間的衝突，它更是我們這個國家未來命運的決定。當我站在國會前發表演說時，我深知每一句話的份量，也深知每一個命令背後的代價。很多人批評我說，我的決策太過於激進，但我知道我們必須這樣做。這不僅僅是解放奴隸的問題，這更是關於正義和自由的戰爭。我的每一個決策，都是基於一個希望，那就是確保這個國家能夠團結一致，確保每一個人，不論他們的膚色，都能擁有同樣的權利。戰爭中的每一個犧牲都是痛苦的，但我相信這樣的犧牲是有價值的。只有經歷了這些艱辛，我們才能迎來一個新的、更自由的美國。')">
+        <h3>政治領袖</h3>
+        <img src="images/lincoln.jpg" alt="政治領袖">
+        <p>點擊查看林肯的故事</p>
+    </div>
+    <div class="scroll-item" onclick="showStory('奴隸：瑪麗的希望', '我的名字叫瑪麗，我是一個在南方莊園工作的奴隸。從小，我就不知道什麼是自由。我每天清晨被叫醒，在烈日下工作到夜幕降臨，沒有任何權利，也無法反抗主人。但是，我聽說外面在打仗，有人說這場戰爭是為了我們，為了讓我們不再被當作財產，而是能夠成為一個真正的人。我一直不敢奢望自由，直到有一天，莊園裡傳來了消息：聯邦軍正在逼近。那一天，我第一次感受到了一絲希望。也許，我們真的可以擺脫這種生活，也許我們的孩子可以過上不再受束縛的生活。我祈禱戰爭能盡快結束，讓我們能夠看到一個真正自由的未來。')">
+        <h3>奴隸</h3>
+        <img src="images/slave.jpg" alt="奴隸">
+        <p>點擊查看瑪麗的故事</p>
+    </div>
+    <div class="scroll-item" onclick="showStory('婦女：艾米麗的堅強', '我是艾米麗，一位南方的小鎮婦女。我的丈夫被徵召上了戰場，留下我和兩個年幼的孩子。戰爭改變了一切，原本安穩的生活不再，我不得不學著打理農場，照顧家人，甚至在村莊裡為受傷的士兵做些簡單的護理工作。每天，我都在思念我的丈夫，不知道他現在在哪裡，是否還活著。戰爭讓我們分離，但它也讓我變得堅強。我不再是那個只懂得在家相夫教子的婦女，如今，我成了一個能夠獨當一面的母親。雖然戰爭帶來了巨大的苦難，但它也教會了我們自立和堅持。我只希望這場戰爭能早日結束，讓家人團聚，讓孩子們能夠在一個和平的世界中成長。')">
+        <h3>婦女</h3>
+        <img src="images/woman.jpg" alt="婦女">
+        <p>點擊查看艾米麗的故事</p>
+    </div>
+</div>
+
+<!-- 彈出視窗來顯示故事 -->
+<div id="storyModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 id="storyTitle"></h2>
+        <p id="storyText"></p>
+    </div>
+</div>
+
+<!-- CSS樣式 -->
+<style>
+.horizontal-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding: 10px;
+}
+.scroll-item {
+    flex: 0 0 auto;
+    width: 200px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 8px;
+    transition: transform 0.2s;
+}
+.scroll-item:hover {
+    transform: scale(1.05);
+}
+.scroll-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    position: relative;
+}
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+</style>
+
+<!-- JavaScript功能 -->
+<script>
+function showStory(title, story) {
+    document.getElementById('storyTitle').innerText = title;
+    document.getElementById('storyText').innerText = story;
+    document.getElementById('storyModal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('storyModal').style.display = 'none';
+}
+
+// 確保點擊彈出視窗外部時關閉彈窗
+window.onclick = function(event) {
+    var modal = document.getElementById('storyModal');
+    if (event.target == modal) {
+        closeModal();
+    }
+}
+</script>
+
+
+        <!-- 序幕 -->
+        <section id="prologue" class="section animate__animated">
+            <h2>美國的誕生與公民身份</h2>
+            <p>最初的美國公民權利僅限於白人男性，奴隸和婦女並不享有公民權。18世紀晚期，北美殖民地經歷了獨立戰爭，這是美國公民身份演變的起點。</p>
+            <div class="interactive" data-content="declaration">
+                <img src="images/declaration.jpg" alt="獨立宣言" class="clickable">
+                <p>點擊查看《獨立宣言》相關段落</p>
+            </div>
+        </section>
+
+        <!-- 第一幕 -->
+        <section id="act1" class="section animate__animated">
+            <h2>憲法修正案與南北戰爭</h2>
+            <p>19世紀中期，南北戰爭席捲全國，為解放奴隸和統一國家而戰，在這場戰爭後，通過了憲法修正案，重新定義了美國的公民身份。第13號修正案廢除了奴隸制，第14號修正案賦予所有出生於美國的人民公民身份，第15號修正案保障了男性的選舉權，無論其種族。1920年第十九修正案獲批准後，女性才被授予投票權。</p>
+            <div class="interactive" data-content="amendments">
+                <img src="images/amendments.jpg" alt="憲法修正案" class="clickable">
+                <p>點擊查看修正案的具體內容</p>
+            </div>
+        </section>
+
+        <!-- 第二幕 -->
+<section id="act2" class="section animate__animated">
+    <h2>民權運動與現代公民權利</h2>
+    <p>1950至1960年代，非裔美國人和其他少數族裔的民權運動如火如荼，要求真正的平等。這場運動促使了1964年的《民權法案》成為里程碑。</p>
+    <div class="interactive" data-content="civil_rights">
+        <img src="images/civil_rights.jpg" alt="民權運動" class="clickable">
+        <p>點擊參與民權運動中的辯論</p>
+    </div>
+    <!-- 新增SDG 16連結 -->
+    <div class="interactive" id="sdg16-link">
+        <img src="images/sdg16.jpg" alt="和平與正義制度" class="clickable sdg16-image">
+        <p>點擊查看SDG 16：和平與正義制度</p>
+    </div>
+    
+    </div>
+</section>
+
+
+        <!-- 第三幕 -->
+
+<!-- 國際特赦組織報告嵌入 -->
+<section id="act3" class="section animate__animated">
+    <h2>普世人權與國際法</h2>
+    <p>人權並非美國專屬，全球範圍內的人權運動推動了《公民權利和政治權利國際公約》（ICCPR）和《經濟、社會及文化權利國際公約》（ICESCR）的實施。</p>
+    <div class="interactive" data-content="human_rights">
+        <img src="images/human_rights.jpg" alt="聯合國簽署人權宣言" class="clickable">
+        <p>點擊查看國際人權的發展歷史</p>
+    </div>
+    <!-- 新增動態加載按鈕 -->
+    <div class="load-report">
+        <button onclick="loadHumanRightsReport()">查看最新人權報告</button>
+    </div>
+    <div id="report-container"></div>
+</section>
+
+
+<script>
+    function loadHumanRightsReport() {
+        const container = document.getElementById('report-container');
+        container.innerHTML = `
+            <h3>國際特赦組織最新報告</h3>
+            <a href="https://www.amnesty.org/en/latest/reports/" target="_blank">點擊這裡查看國際特赦組織最新報告</a>
+            <h3>自由之家最新報告</h3>
+            <a href="https://freedomhouse.org/reports" target="_blank">點擊這裡查看自由之家最新報告</a>
+        `;
+    }
+</script>
+
+
+<script>
+    document.getElementById('amnesty-iframe').addEventListener('error', function() {
+        document.getElementById('iframe-fallback').style.display = 'block';
+    });
+</script>
+
+
+        <!-- 結尾 -->
+<section id="conclusion" class="section animate__animated">
+    <h2>行動與反思</h2>
+    <p>公民權利與人權的實現是一條漫長的道路。今天，你可以做些什麼來促進這些權利的實現？</p>
+    <div class="call-to-action">
+        <button onclick="supportHumanRights()">支持人權行動</button>
+    </div>
+</section>
+
+
+    </main>
+    <footer>
+        <p>&copy; 2024 數位敘事網站 - 由您來書寫未來</p>
+    </footer>
+    <script src="js/scripts.js"></script>
+</body>
+
+</html>
